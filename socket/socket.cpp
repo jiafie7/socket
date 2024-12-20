@@ -109,3 +109,42 @@ void Socket::close()
   }
 }
 
+bool Socket::setNonBlocking()
+{
+  int flags = fcntl(m_socket_fd, F_GETFL, 0);
+  if (flags < 0)
+  {
+    log_error("socket set non blocking error: errno = %d, errmsg = %s.", errno, strerror(errno));
+    return false;
+  }
+
+  flags |= O_NONBLOCK;
+  if (fcntl(m_socket_fd, F_SETFL, flags) < 0)
+  {
+    log_error("socket set non blocking error: errno = %d, errmsg = %s.", errno, strerror(errno));
+    return false;
+  }
+  return true;
+}
+
+bool Socket::setSendBuffer(int size)
+{
+  int buffer_size = size;
+  if (setsockopt(m_socket_fd, SOL_SOCKET, SO_SNDBUF, &buffer_size, sizeof(buffer_size)) < 0)
+  {
+    log_error("socket set send buffer error: errno = %d, errmsg = %s.", errno, strerror(errno));
+    return false;
+  }
+  return true;
+}
+
+bool Socket::setRecvBuffer(int size)
+{
+  int buffer_size = size;
+  if (setsockopt(m_socket_fd, SOL_SOCKET, SO_RCVBUF, &buffer_size, sizeof(buffer_size)) < 0)
+  {
+    log_error("socket set recv buffer error: errno = %d, errmsg = %s.", errno, strerror(errno));
+    return false;
+  }
+  return true;
+}

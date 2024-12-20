@@ -2,6 +2,7 @@
 
 #include <arpa/inet.h>
 #include <cstring>
+#include <fcntl.h>
 #include <netinet/in.h>
 #include <string>
 #include <sys/socket.h>
@@ -29,6 +30,10 @@ namespace melon
       int send(const char* buf, int len);
       int recv(char* buf, int len);
       void close();
+
+      bool setNonBlocking();
+      bool setSendBuffer(int size);
+      bool setRecvBuffer(int size);
 
     protected:
       std::string m_ip;
