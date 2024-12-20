@@ -30,7 +30,7 @@ bool Socket::bind(const std::string& ip, int port)
   struct sockaddr_in sockaddr;
   sockaddr.sin_family = AF_INET;
   if (ip.empty())
-    sockaddr.sin_addr.s_addr = inet_addr(INADDR_ANY);
+    sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);
   else
     sockaddr.sin_addr.s_addr = inet_addr(ip.c_str());
   sockaddr.sin_port = htons(port);

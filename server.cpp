@@ -5,6 +5,7 @@ using namespace melon::socket;
 int main()
 {
   Singleton<LogSystem>::getInstance()->open("./../server.log");
+  Singleton<LogSystem>::getInstance()->setConsole(false);
   Socket server;
   server.bind("127.0.0.1", 7777);
   server.listen(1024);
